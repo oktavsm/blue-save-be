@@ -1,6 +1,6 @@
 services:
   app:
-    image: <DOCKERHUB_USERNAME>/blue-save-backend:latest
+    image: oktaavsm/blue-save-backend:latest
     container_name: blue-save-app-user01
     env_file:
       - .env
