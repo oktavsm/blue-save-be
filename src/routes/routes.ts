@@ -12,7 +12,7 @@ router.get("/health", (_gsreq, res) => res.status(200).json({
 router.use("/auth", authRoutes);
 router.use("/reports", reportRoutes);
 router.use("/donation", donationRoutes);
-// router.use("/news", newsRoutes);
+router.use("/news", newsRoutes);
 router.use("/events", eventRoutes);
 
 export default router;
