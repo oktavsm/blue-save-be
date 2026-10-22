@@ -7,7 +7,7 @@ import eventRoutes from "./eventRoutes";
 
 const router = Router();
 router.get("/health", (_gsreq, res) => res.status(200).json({
-    status: "Blue Save API is running",
+    status: "Deployed with Github Actions",
 }));
 router.use("/auth", authRoutes);
 router.use("/reports", reportRoutes);
