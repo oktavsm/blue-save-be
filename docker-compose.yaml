@@ -1,0 +1,68 @@
+services:
+  app:
+    image: <DOCKERHUB_USERNAME>/blue-save-backend:latest
+    container_name: blue-save-app-user01
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT}:3000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - blue-save-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: blue-save-mysql-user01
+    command:
+      - --performance-schema=OFF
+      - --innodb-buffer-pool-size=32M
+      - --skip-log-bin
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    expose:
+      - "3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - blue-save-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: blue-save-redis-user01
+    expose:
+      - "6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - blue-save-network
+
+volumes:
+  mysql-data:
+    name: blue-save-mysql-data-user01
+  redis-data:
+    name: blue-save-redis-data-user01
+
+networks:
+  blue-save-network:
+    name: blue-save-network-user01
