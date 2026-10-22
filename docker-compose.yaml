@@ -16,20 +16,20 @@ services:
       - blue-save-network
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
-      - "com.centurylinklabs.watchtower.scope=userXX"
+      - "com.centurylinklabs.watchtower.scope=user01"
 
   watchtower:
     image: nickfedor/watchtower
-    container_name: watchtower-userXX
+    container_name: watchtower-user01
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command:
       - --interval=30
       - --label-enable
-      - --scope=userXX
+      - --scope=user01
       - --cleanup
     labels:
-      - "com.centurylinklabs.watchtower.scope=userXX"
+      - "com.centurylinklabs.watchtower.scope=user01"
     restart: unless-stopped
 
 
