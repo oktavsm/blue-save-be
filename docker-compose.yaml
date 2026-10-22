@@ -14,6 +14,24 @@ services:
     restart: unless-stopped
     networks:
       - blue-save-network
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "com.centurylinklabs.watchtower.scope=userXX"
+
+  watchtower:
+    image: nickfedor/watchtower
+    container_name: watchtower-userXX
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - --interval=30
+      - --label-enable
+      - --scope=userXX
+      - --cleanup
+    labels:
+      - "com.centurylinklabs.watchtower.scope=userXX"
+    restart: unless-stopped
+
 
   mysql:
     image: mysql:8.0
